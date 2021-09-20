@@ -31,8 +31,8 @@ Route::group(['middleware' => 'auth'], function() {
 //
 //    Route::get('organization/{organization_id}', 'JoinController@organization')->name('organization');
 //
-//    // Administrator routes
-//    Route::group(['middleware' => 'is_admin'], function() {
-//        Route::resource('categories', 'CategoryController');
-//    });
+    // Administrator routes
+    Route::group(['middleware' => 'is_admin'], function() {
+        Route::resource('categories', 'CategoryController');
+    });
 });

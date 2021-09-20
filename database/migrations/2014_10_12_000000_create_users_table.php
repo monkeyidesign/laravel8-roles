@@ -20,8 +20,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->unsignedBigInteger('role_id')->default(1);
             $table->timestamps();
         });
+//        \App\Models\User::where('is_admin', 1)->update(['role_id' => 2]);
     }
 
     /**
@@ -31,6 +33,10 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+//        Schema::table('users', function (Blueprint $table) {
+//            $table->dropForeign(['role_id']);
+//            $table->dropColumn('role_id');
+//        });
         Schema::dropIfExists('users');
     }
 }

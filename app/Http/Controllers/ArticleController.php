@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -50,7 +51,8 @@ class ArticleController extends Controller
         Article::create($request->all() +
             [
                 'user_id' => auth()->user()->id,
-                //'published_at' => Gate::allows('publish-articles') && $request->input('published') ? now() : null
+                //'published_at' => (auth()->user()->is_admin || auth()->user()->is_publisher) && $request->input('published') ? now() : null,
+                'published_at' => Gate::allows('publish-articles') && $request->input('published') ? now() : null
             ]
         );
         return redirect()->route('articles.index');
@@ -75,8 +77,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //$this->authorize('update', $article);
-
+        $this->authorize('update', $article);
+        //$this->authorize('edit-article', $article);
         $categories = Category::all();
 
         return view('articles.edit', compact('article', 'categories'));
@@ -91,7 +93,16 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+        $this->authorize('update', $article);
+
+        $data = $request->all();
+        if (Gate::allows('publish-articles')) {
+//        if (auth()->user()->is_admin || auth()->user()->is_publisher) {
+            $data['published_at'] = $request->input('published') ? now() : null;
+        }
+        $article->update($data);
+
+        return redirect()->route('articles.index');
     }
 
     /**
@@ -102,6 +113,10 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $this->authorize('update', $article);
+
+        $article->delete();
+
+        return redirect()->route('articles.index');
     }
 }

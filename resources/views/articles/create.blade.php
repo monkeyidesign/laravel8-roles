@@ -23,18 +23,24 @@
 
                             Category:
                             <br />
-{{--                            <select class="form-control" name="category_id">--}}
-{{--                                @foreach ($categories as $category)--}}
-{{--                                    <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
+                            <select class="form-control" name="category_id">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
                             <br />
 
-{{--                            @can('publish-articles')--}}
-{{--                                <input type="checkbox" name="published" value="1" /> Published--}}
-{{--                                <br /><br />--}}
-{{--                            @endcan--}}
+                            @can('publish-articles')
+                                <input type="checkbox" name="published" value="1" /> Published
+                                <br /><br />
+                            @endcan
 
+{{--                            @if (Auth::check())--}}
+{{--                            <br>--}}
+{{--                                @if(auth()->user()->is_publisher || auth()->user()->is_admin)--}}
+{{--                                    <input type="checkbox" name="published" value="1" /> Published <br /><br />--}}
+{{--                                @endif--}}
+{{--                            @endif--}}
                             <input type="submit" value=" Save Article " class="btn btn-primary" />
                         </form>
                     </div>

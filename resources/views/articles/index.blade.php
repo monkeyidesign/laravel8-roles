@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">{{ __('Articles') }}</div>
 
@@ -14,6 +14,9 @@
                             <thead>
                             <tr>
                                 <th>Title</th>
+{{--                                @if(@auth()->user()->is_admin)--}}
+{{--                                    <th>User</th>--}}
+{{--                                @endif--}}
                                 @can('see-article-user')
                                     <th>User</th>
                                 @endcan
@@ -26,9 +29,12 @@
                             @forelse ($articles as $article)
                                 <tr>
                                     <td>{{ $article->title }}</td>
-{{--                                    @can('see-article-user')--}}
+{{--                                    @if(@auth()->user()->is_admin)--}}
 {{--                                        <td>{{ $article->user->name }}</td>--}}
-{{--                                    @endcan--}}
+{{--                                    @endif--}}
+                                    @can('see-article-user')
+                                        <td>{{ $article->user->name }}</td>
+                                    @endcan
                                     <td>{{ $article->created_at }}</td>
                                     <td>{{ $article->published_at }}</td>
                                     <td>
@@ -36,8 +42,7 @@
                                         <form action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display: inline">
                                             @csrf
                                             @method('DELETE')
-                                            <input type="submit" class="btn btn-sm btn-danger" value="Delete"
-                                                   onclick="return confirm('Are you sure?')" />
+                                            <input type="submit" class="btn btn-sm btn-danger" value="Delete" onclick="return confirm('Are you sure?')" />
                                         </form>
                                     </td>
                                 </tr>

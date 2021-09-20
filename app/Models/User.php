@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -41,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getIsAdminAttribute()
+    {
+        return $this->role_id == 1;
+    }
+    public function getIsPublisherAttribute()
+    {
+        return $this->role_id == 2;
+    }
+
 }
